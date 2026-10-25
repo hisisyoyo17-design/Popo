@@ -1,0 +1,26 @@
+
+name: Tailscale Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  connect:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Check Tailscale
+        shell: pwsh
+        run: |
+          tailscale status
+          
